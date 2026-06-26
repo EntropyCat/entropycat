@@ -54,14 +54,22 @@ cd "$tmp"
 unzip -q "$asset"
 extracted=$(ls -d entropycat_*/)
 
-# install binary
-if [ -w "$INSTALL_DIR" ]; then
-  cp "${extracted}entropycat"  "$INSTALL_DIR/entropycat"
+# Standalone build: a folder of the launcher + its dylibs/data. Install the whole
+# folder to LIB_DIR and symlink just the launcher onto PATH.
+LIB_DIR="/usr/local/lib/entropycat"
+if [ -w "$INSTALL_DIR" ] && [ -w "$(dirname "$LIB_DIR")" ]; then
+  rm -rf "$LIB_DIR"
+  mkdir -p "$LIB_DIR"
+  cp -R "${extracted}." "$LIB_DIR/"
+  ln -sf "$LIB_DIR/entropycat" "$INSTALL_DIR/entropycat"
 else
-  sudo cp "${extracted}entropycat"  "$INSTALL_DIR/entropycat"
+  sudo rm -rf "$LIB_DIR"
+  sudo mkdir -p "$LIB_DIR"
+  sudo cp -R "${extracted}." "$LIB_DIR/"
+  sudo ln -sf "$LIB_DIR/entropycat" "$INSTALL_DIR/entropycat"
 fi
 
-chmod +x "$INSTALL_DIR/entropycat"
+chmod +x "$LIB_DIR/entropycat"
 rm -rf "$tmp"
 
 echo ""
