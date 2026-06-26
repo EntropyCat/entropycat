@@ -54,18 +54,18 @@ cd "$tmp"
 unzip -q "$asset"
 extracted=$(ls -d entropycat_*/)
 
-# install both binaries
+# install binary
 if [ -w "$INSTALL_DIR" ]; then
   cp "${extracted}entropycat"  "$INSTALL_DIR/entropycat"
-  cp "${extracted}entropycatd" "$INSTALL_DIR/entropycatd"
 else
   sudo cp "${extracted}entropycat"  "$INSTALL_DIR/entropycat"
-  sudo cp "${extracted}entropycatd" "$INSTALL_DIR/entropycatd"
 fi
 
-chmod +x "$INSTALL_DIR/entropycat" "$INSTALL_DIR/entropycatd"
+chmod +x "$INSTALL_DIR/entropycat"
 rm -rf "$tmp"
 
 echo ""
 echo "entropycat v${VERSION} installed to $INSTALL_DIR"
-echo "Run: entropycat"
+echo "Get started:"
+echo "  entropycat init    # one-time setup wizard"
+echo "  entropycat start   # start the server"
